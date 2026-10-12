@@ -183,7 +183,7 @@ test("feynman alpha reaches Alpha Hub help when cwd is supplied before alpha", (
 
 	assert.equal(result.status, 0, result.stderr);
 	assert.match(result.stdout, /Alpha Hub - search papers and annotate what you learn/);
-	assert.doesNotMatch(result.stdout, /Research-first agent shell built on Pi/);
+	assert.doesNotMatch(result.stdout, /The open source AI research agent/);
 });
 
 test("common wrong flags and commands name the right one", () => {
@@ -203,6 +203,9 @@ test("common wrong flags and commands name the right one", () => {
 	assert.match(run(["model", "openai/gpt-6-sol"]), /Did you mean `feynman model set openai\/gpt-6-sol`\?/);
 	assert.match(run(["setup", "model"]), /To choose a model, run `feynman model login` or `feynman model set`\./);
 	assert.doesNotMatch(run(["-p", "hi", "--model", "nope/none"]), /Unknown option '-p'/);
+	assert.match(run(["--json"]), /Did you mean `feynman --mode json`\?/);
+	assert.match(run(["--work-dir", "x"]), /Did you mean `feynman --cwd <dir>`\?/);
+	assert.match(run(["-v"]), /^\d+\.\d+\.\d+$/m);
 });
 
 test("unknown CLI flags point users to Feynman help", () => {

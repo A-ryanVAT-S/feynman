@@ -34,7 +34,7 @@ if (compareNodeVersions(parseNodeVersion(process.versions.node), parseNodeVersio
 const here = import.meta.dirname;
 
 // `--version` needs only package.json; answer it without loading the CLI.
-if (process.argv.length === 3 && process.argv[2] === "--version") {
+if (process.argv.length === 3 && (process.argv[2] === "--version" || process.argv[2] === "-v")) {
   const { readFileSync } = await import("node:fs");
   console.log(JSON.parse(readFileSync(resolve(here, "..", "package.json"), "utf8")).version);
   process.exit(0);
