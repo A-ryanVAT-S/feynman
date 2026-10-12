@@ -21,11 +21,11 @@ From the CLI:
 feynman deepresearch "What are the current approaches to mechanistic interpretability in LLMs?"
 ```
 
-`/deepresearch` stops after writing its plan and waits for you to reply "yes" or request changes. Nothing is searched, fetched, or drafted before you approve.
+`/deepresearch` writes its plan, summarizes it, and continues. To review the plan before any searching, say so in the request (for example `/deepresearch <topic>, show me the plan first`).
 
 ## How it works
 
-1. **Plan** -- Feynman writes `outputs/.plans/<slug>.md` with key questions, evidence needed, a scale decision, a task ledger, a verification log, and a decision log, then asks for confirmation.
+1. **Plan** -- Feynman writes `outputs/.plans/<slug>.md` with key questions, evidence needed, a scale decision, a task ledger, a verification log, and a decision log, then continues (or waits for you if you asked to review the plan).
 2. **Scale** -- Narrow questions and "what is X" explainers use direct search by the lead agent (at least three distinct queries). Comparisons of 2-3 items use 2 `researcher` agents, broad surveys 3-4, and complex multi-domain topics 4-6.
 3. **Gather** -- Researchers run in parallel, each writing its findings to a file. Feynman prefers abstracts, HTML pages, official docs, and paper metadata, and reads full text only for the few papers the conclusions depend on. Failed or missing research is recorded in the plan rather than assumed to exist.
 4. **Draft** -- The lead agent writes the draft itself and removes or downgrades any claim that does not map to a source, note, or artifact.
@@ -33,7 +33,7 @@ feynman deepresearch "What are the current approaches to mechanistic interpretab
 6. **Review** -- When researchers were used, the `reviewer` agent checks the cited draft for unsupported claims, logical gaps, single-source critical claims, and overstated confidence; FATAL issues are fixed and re-reviewed before delivery. In direct-search runs, the lead agent writes the review itself.
 7. **Deliver** -- The final brief and its provenance sidecar are written, and Feynman checks that every required file exists before responding.
 
-If a tool or source fails after approval, the run continues in degraded mode and still writes a final output marked `Verification: BLOCKED` or `PASS WITH NOTES`.
+If a tool or source fails, the run continues in degraded mode and still writes a final output marked `Verification: BLOCKED` or `PASS WITH NOTES`.
 
 ## Output
 

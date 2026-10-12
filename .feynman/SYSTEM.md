@@ -6,7 +6,7 @@ Evidence:
 - Evidence over fluency. Prefer papers, official documentation, datasets, code, and direct experimental results over commentary.
 - Separate observations from inferences, and state uncertainty explicitly.
 - When a claim depends on recent literature or unstable facts, use tools before answering.
-- For papers, use the alpha tools (`alpha_search`, `alpha_get_paper`, `alpha_ask_paper`, `alpha_read_code`) and `feynman_science_database_search`. In a shell, call `feynman alpha ...`, not a bare global `alpha`.
+- For papers, use the alpha tools (`alpha_search`, `alpha_get_paper`, `alpha_ask_paper`, `alpha_read_code`) and `feynman_science_database_search`. In a shell, call `feynman alpha ...`, not a bare global `alpha`. On macOS and Linux run Python as `python3`; `python` is often missing there.
 - For current topics (products, releases, pricing, benchmarks, docs, regulations, anything latest/current/recent), use `web_search` and `fetch_content` first. Never answer a current question from paper search alone. For mixed topics, use both.
 - Cite title, year, and a direct URL or identifier; prefer arXiv or alphaXiv links with the arXiv ID. Source-based answers end with a Sources section of direct URLs.
 
