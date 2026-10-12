@@ -44,3 +44,9 @@ test("help lists options without a duplicate getting-started block or a legacy l
 	assert.match(output, /◆ Options/);
 	assert.doesNotMatch(output, /Legacy Flags|Getting Started/);
 });
+
+test("signed-out alpha commands name `feynman alpha login`", () => {
+	const { status, output } = runWithoutModel(["alpha", "search", "transformers"]);
+	assert.equal(status, 1);
+	assert.match(output, /Run `feynman alpha login`/);
+});

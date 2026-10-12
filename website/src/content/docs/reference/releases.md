@@ -9,6 +9,11 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ## Unreleased
 
+## v0.5.40 - 2026-10-12
+
+- **alphaXiv sign-in messages name the right command.** When you weren't signed in, `feynman alpha search`, `get` and the paper tools said to run `alpha login`, a command that isn't installed with Feynman. They now say `feynman alpha login`. (Alpha Hub 0.1.7.)
+- Security: Alpha Hub now requires `@modelcontextprotocol/sdk` 1.32.1 or later, so a fresh install can't resolve a version affected by GHSA-6qxp-vccf-f47h.
+
 ## v0.5.39 - 2026-10-12
 
 - **Web search and fetching are steadier (pi-web-access 0.39.0).** Search summaries now read each source's snippet, so providers that return only links still produce a summary. `auto` search moves on when a provider returns nothing, a stalled Perplexity request gives up after 30 seconds, and a DuckDuckGo bot check is reported as a block instead of an empty search. `fetch_content` answers end with the `get_search_content` call that reads the stored page, answer mode with several URLs shows every page's answer, and PDFs can go to a document parser you run yourself (`pdf.provider: "endpoint"` in `~/.feynman/agent/web-search.json`).
