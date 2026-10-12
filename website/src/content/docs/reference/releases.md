@@ -9,6 +9,10 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ## Unreleased
 
+## v0.5.39 - 2026-10-12
+
+- **Web search and fetching are steadier (pi-web-access 0.39.0).** Search summaries now read each source's snippet, so providers that return only links still produce a summary. `auto` search moves on when a provider returns nothing, a stalled Perplexity request gives up after 30 seconds, and a DuckDuckGo bot check is reported as a block instead of an empty search. `fetch_content` answers end with the `get_search_content` call that reads the stored page, answer mode with several URLs shows every page's answer, and PDFs can go to a document parser you run yourself (`pdf.provider: "endpoint"` in `~/.feynman/agent/web-search.json`).
+
 ## v0.5.38 - 2026-10-12
 
 - **`/deepresearch` no longer waits for a "yes" after its plan.** About 1 in 5 people who started it never answered the approval question, so the research never ran. It now writes the plan, summarizes it, and continues, as `/lit` does. To check the plan first, say so in the request, for example `/deepresearch <topic>, show me the plan first`.
