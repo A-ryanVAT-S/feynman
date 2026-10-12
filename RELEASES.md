@@ -6,6 +6,10 @@ GitHub release notes are generated from the matching `## vX.Y.Z` section in this
 
 ## Unreleased
 
+## v0.5.37 - 2026-10-12
+
+- **A sign-in that came back without a code says what to do.** When the browser returned to `feynman model login` or `feynman setup` without an authorization code (seen mostly on Windows), Feynman printed only "Missing authorization code". It now gives the same advice as for `invalid_grant`: sign out of the provider's site or use a private window, then retry, and for ChatGPT it suggests `feynman model login openai-codex`.
+
 ## v0.5.36 - 2026-10-12
 
 - **A new user gets to a working model instead of a dead end.** Launching `feynman` with no model opens a menu to set one up.
