@@ -1,6 +1,6 @@
 {
   "name": "@companion-ai/feynman",
-  "version": "0.5.39",
+  "version": "0.5.40",
   "description": "The open source AI research agent.",
   "license": "MIT",
   "type": "module",
@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",
-    "@companion-ai/alpha-hub": "0.1.6",
+    "@companion-ai/alpha-hub": "0.1.7",
     "fast-xml-parser": "5.11.1",
     "pi-btw": "0.8.0",
     "pi-docparser": "4.0.0",
