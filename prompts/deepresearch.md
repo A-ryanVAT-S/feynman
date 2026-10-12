@@ -17,7 +17,7 @@ Every run must leave these files on disk:
 - `outputs/<slug>.md` or `papers/<slug>.md`
 - `outputs/<slug>.provenance.md` or `papers/<slug>.provenance.md`
 
-Before the plan is approved, only the plan file may exist; do not create placeholder drafts, final outputs, or provenance files. After the user approves the plan, if any capability fails, continue in degraded mode and still write a blocked or partial final output and provenance sidecar. Never end with chat-only output after plan approval. Never end with only an explanation in chat after plan approval. Use `Verification: BLOCKED` when verification could not be completed.
+Do not create placeholder drafts, final outputs, or provenance files before their stage. If any capability fails, continue in degraded mode and still write a blocked or partial final output and provenance sidecar. Never end with chat-only output or with only an explanation in chat. Use `Verification: BLOCKED` when verification could not be completed.
 
 ## Step 1: Plan
 
@@ -31,11 +31,7 @@ Create `outputs/.plans/<slug>.md` immediately. The plan must include:
 
 Make the scale decision before assigning owners in the plan. If the topic is a narrow "what is X" explainer, the plan must use lead-owned direct search tasks only; do not allocate researcher subagents in the task ledger.
 
-After writing the plan, stop and ask for explicit confirmation before gathering evidence. Summarize the plan briefly and ask:
-
-`Proceed with this deep research plan? Reply "yes" to continue, or tell me what to change.`
-
-Do not run searches, fetch sources, spawn subagents, draft, cite, review, or deliver final artifacts until the user confirms. If the user requests changes, update `outputs/.plans/<slug>.md` first, then ask for confirmation again.
+After writing the plan, summarize it in a few lines and continue immediately in the same turn with the next tool call; never end a turn with a message that only announces what you will do next. Stop for confirmation only when the user explicitly asked to review the plan first; then ask `Proceed with this deep research plan? Reply "yes" to continue, or tell me what to change.`, and if they request changes, update `outputs/.plans/<slug>.md` before asking again.
 
 ## Step 2: Scale
 

@@ -8,6 +8,7 @@ import { installFeynmanHeader } from "./research-tools/header.js";
 import { registerHelpCommand } from "./research-tools/help.js";
 import { registerHuggingFaceTools } from "./research-tools/huggingface.js";
 import { registerLaunchNotice } from "./research-tools/launch-notice.js";
+import { registerModelErrorHint } from "./research-tools/model-error-hint.js";
 import { registerInitCommand, registerOutputsCommand } from "./research-tools/project.js";
 import { registerServiceTierControls } from "./research-tools/service-tier.js";
 import { registerScienceDatabaseTools } from "./research-tools/science-databases.js";
@@ -29,6 +30,7 @@ export default function researchTools(pi: ExtensionAPI): void {
 	registerHelpCommand(pi);
 	registerInitCommand(pi);
 	registerLaunchNotice(pi);
+	registerModelErrorHint(pi);
 	registerOutputsCommand(pi);
 	registerServiceTierControls(pi);
 	registerScienceDatabaseTools(pi);

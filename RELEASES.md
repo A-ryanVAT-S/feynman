@@ -6,6 +6,11 @@ GitHub release notes are generated from the matching `## vX.Y.Z` section in this
 
 ## Unreleased
 
+## v0.5.38 - 2026-10-12
+
+- **`/deepresearch` no longer waits for a "yes" after its plan.** About 1 in 5 people who started it never answered the approval question, so the research never ran. It now writes the plan, summarizes it, and continues, as `/lit` does. To check the plan first, say so in the request, for example `/deepresearch <topic>, show me the plan first`.
+- **A failed model call says what went wrong.** When the provider rejects a request, Feynman now names the cause and the fix under the error: a model your account can't use (pick another with `/model`), no credits, a rate limit or used-up quota, rejected credentials (`feynman model login <provider>`), or a temporary outage. Most failed `/lit` and `/audit` runs ended on one of these. Feynman bugs go to github.com/Companion-Inc/feynman/issues; Pi's `/bug` reports to Pi's developers.
+
 ## v0.5.37 - 2026-10-12
 
 - **A sign-in that came back without a code says what to do.** When the browser returned to `feynman model login` or `feynman setup` without an authorization code (seen mostly on Windows), Feynman printed only "Missing authorization code". It now gives the same advice as for `invalid_grant`: sign out of the provider's site or use a private window, then retry, and for ChatGPT it suggests `feynman model login openai-codex`.
