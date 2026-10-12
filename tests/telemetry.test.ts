@@ -300,7 +300,11 @@ test("a telemetry send that gets no answer ends quietly within its budget", asyn
 	})) as never;
 	const send = createTelemetryCircuitBreakerFetch(hangingFetch, (error) => failures.push(error), 200);
 	const started = Date.now();
+	// AbortSignal.timeout's timer does not hold the event loop open; on Node 22
+	// the test would end before it fires.
+	const keepAlive = setTimeout(() => {}, 2000);
 	const response = await send("https://posthog.test/batch/", { method: "POST", headers: {} } as never);
+	clearTimeout(keepAlive);
 	assert.equal(response.status, 204);
 	assert.ok(Date.now() - started < 1000, `took ${Date.now() - started}ms`);
 	assert.equal(failures.length, 1);
