@@ -6,6 +6,13 @@ GitHub release notes are generated from the matching `## vX.Y.Z` section in this
 
 ## Unreleased
 
+## v0.5.35 - 2026-10-11
+
+- **PubMed group authors keep their affiliations.** Consortium and study-group authors came back with no affiliations; they now keep them, as individual authors do. Thanks to @KennyMcSimpson (#335).
+- **pi-subagents 0.77.0.** Subagent tools cost the lead agent far fewer tokens per request (the `subagent` tool's definition shrank from about 18,700 to 3,300 characters), and long subagent reports arrive as a preview plus the file path instead of the full text. Updating Feynman while a session is running no longer breaks every subagent launch in that session. A wrong agent or model name now comes back with suggestions.
+- **pi-btw 0.8.0.** The `/btw` side-chat composer completes slash commands, and side threads no longer fail with Anthropic's "references unknown tool" error.
+- `feynman -v` prints the version, and `--json`, `--work-dir` and `--path` now point to `--mode json` and `--cwd <dir>`.
+
 ## v0.5.34 - 2026-10-09
 
 - **OpenAlex lookups that miss now say why.** Looking up a name or title where OpenAlex expects an ID (for example `openalex_get_work:Attention is all you need` or `author: Geoffrey Hinton`), or an ID that does not exist, returned OpenAlex's raw HTML "404 Not Found" page. The error now says no such work, author or source exists and names the search command to use instead, so the agent recovers on its next call.

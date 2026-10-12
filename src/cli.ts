@@ -89,6 +89,9 @@ const UNKNOWN_OPTION_HINTS: Record<string, string> = {
 	"--setup": "feynman setup",
 	"--list-models": "feynman model list",
 	"--new": "feynman --new-session",
+	"--json": "feynman --mode json",
+	"--work-dir": "feynman --cwd <dir>",
+	"--path": "feynman --cwd <dir>",
 };
 
 // Removed commands fail instead of falling through to a chat prompt.
@@ -107,7 +110,7 @@ function printHelp(appRoot: string): void {
 	);
 
 	printAsciiHeader([
-		"Research-first agent shell built on Pi.",
+		"The open source AI research agent.",
 		"Use `feynman setup` first if this is a new machine.",
 	]);
 
@@ -592,7 +595,7 @@ async function runMain(input: { here: string; appRoot: string; feynmanVersion: s
 				export: { type: "string" },
 				fork: { type: "string" },
 				help: { type: "boolean", short: "h" },
-				version: { type: "boolean" },
+				version: { type: "boolean", short: "v" },
 				"alpha-login": { type: "boolean" },
 				"alpha-logout": { type: "boolean" },
 				"alpha-status": { type: "boolean" },
