@@ -10,6 +10,7 @@ GitHub release notes are generated from the matching `## vX.Y.Z` section in this
 
 - **`/deepresearch` no longer waits for a "yes" after its plan.** About 1 in 5 people who started it never answered the approval question, so the research never ran. It now writes the plan, summarizes it, and continues, as `/lit` does. To check the plan first, say so in the request, for example `/deepresearch <topic>, show me the plan first`.
 - **A failed model call says what went wrong.** When the provider rejects a request, Feynman now names the cause and the fix under the error: a model your account can't use (pick another with `/model`), no credits, a rate limit or used-up quota, rejected credentials (`feynman model login <provider>`), or a temporary outage. Most failed `/lit` and `/audit` runs ended on one of these. Feynman bugs go to github.com/Companion-Inc/feynman/issues; Pi's `/bug` reports to Pi's developers.
+- Research runs on macOS and Linux no longer fail on `python: command not found`; Feynman tells the model to run `python3`.
 
 ## v0.5.37 - 2026-10-12
 

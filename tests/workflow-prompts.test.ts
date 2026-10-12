@@ -11,3 +11,7 @@ for (const name of ["deepresearch", "lit"]) {
 		assert.doesNotMatch(prompt, /stop and ask for explicit confirmation before gathering evidence/);
 	});
 }
+
+test("the system prompt says to run Python as python3", () => {
+	assert.match(readFileSync(".feynman/SYSTEM.md", "utf8"), /run Python as `python3`/);
+});
