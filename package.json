@@ -1,6 +1,6 @@
 {
   "name": "@companion-ai/feynman",
-  "version": "0.5.35",
+  "version": "0.5.36",
   "description": "The open source AI research agent.",
   "license": "MIT",
   "type": "module",

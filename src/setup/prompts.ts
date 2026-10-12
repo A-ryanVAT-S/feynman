@@ -9,7 +9,12 @@ import {
 	select as clackSelect,
 	text as clackText,
 	type Option,
+	settings as clackSettings,
 } from "@clack/prompts";
+
+// clack treats h/j/k/l as arrow keys, so a question typed into a setup menu
+// moved the selection (often onto Cancel). Only the arrow keys move it.
+for (const key of ["h", "j", "k", "l"]) clackSettings.aliases.delete(key);
 
 export class SetupCancelledError extends Error {
 	constructor(message = "setup cancelled") {
@@ -31,6 +36,14 @@ export function nonInteractiveTerminalMessage(env: NodeJS.ProcessEnv = process.e
 			? "Git Bash's default window is not one Node can prompt in: run `winpty feynman setup`, or use PowerShell or Windows Terminal."
 			: "Run it yourself in a terminal window, not through a script or an AI coding agent.",
 		"To skip the prompts, set your provider's API key variable (for example OPENAI_API_KEY or ANTHROPIC_API_KEY) and run `feynman model set <provider/model>`.",
+	].join("\n");
+}
+
+export function noModelMessage(promptGiven = false): string {
+	return [
+		"No model is set up yet, so Feynman can't answer.",
+		"Sign in with `feynman model login`, or set ANTHROPIC_API_KEY or OPENAI_API_KEY, then run feynman again.",
+		...(promptGiven ? ["Your question was not sent."] : []),
 	].join("\n");
 }
 

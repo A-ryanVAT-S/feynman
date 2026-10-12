@@ -9,6 +9,16 @@ This page summarizes what changed in recent Feynman releases. GitHub releases us
 
 ## Unreleased
 
+## v0.5.36 - 2026-10-12
+
+- **A new user gets to a working model instead of a dead end.** Launching `feynman` with no model opens a menu to set one up.
+  - Typing a question there moved the selection onto Cancel: the menu treated `h`, `j`, `k` and `l` as arrow keys. Only the arrow keys move it now.
+  - Cancel used to go on to optional packages, an alphaXiv sign-in that defaulted to Yes, and pandoc, then said "Feynman is ready" with no model. It now exits and says how to add a model, and that your question was not sent.
+  - The first launch asks only for the model. Packages, alphaXiv and pandoc stay in `feynman setup`, where alphaXiv now defaults to No.
+  - Esc in a provider list goes back to the previous menu instead of ending setup.
+  - `feynman -p "…"` with no model now says how to add one, instead of pointing at Pi's `/login` and files inside `node_modules`.
+- `feynman help` drops the duplicate "Getting Started" list and calls the flag section "Options".
+
 ## v0.5.35 - 2026-10-11
 
 - **PubMed group authors keep their affiliations.** Consortium and study-group authors came back with no affiliations; they now keep them, as individual authors do. Thanks to @KennyMcSimpson (#335).

@@ -64,6 +64,7 @@ import { fetchLatestFeynmanVersion, getFeynmanUpgradeLines, isNewerVersion } fro
 import { runDoctor, runStatus } from "./setup/doctor.js";
 import { setupPreviewDependencies } from "./setup/preview.js";
 import { runSetup } from "./setup/setup.js";
+import { noModelMessage } from "./setup/prompts.js";
 import {
 	captureTelemetryEvent,
 	captureTelemetryException,
@@ -114,13 +115,6 @@ function printHelp(appRoot: string): void {
 		"Use `feynman setup` first if this is a new machine.",
 	]);
 
-	printSection("Getting Started");
-	printInfo("feynman");
-	printInfo("feynman setup");
-	printInfo("feynman doctor");
-	printInfo("feynman model");
-	printInfo("feynman search status");
-
 	printSection("Commands");
 	for (const section of cliCommandSections) {
 		for (const command of section.commands) {
@@ -133,7 +127,7 @@ function printHelp(appRoot: string): void {
 		printHelpLine(formatCliWorkflowUsage(command), command.description);
 	}
 
-	printSection("Legacy Flags");
+	printSection("Options");
 	for (const flag of legacyFlags) {
 		printHelpLine(flag.usage, flag.description);
 	}
@@ -801,6 +795,10 @@ async function runMain(input: { here: string; appRoot: string; feynmanVersion: s
 		explicitModelSpec = canonicalModelSpec;
 	}
 
+	const workflowCommandNames = new Set(readPromptSpecs(appRoot).filter((s) => s.topLevelCli).map((s) => s.name));
+	const workflowRest = appendWorkflowFlagPositionals(command, rest, values);
+	const promptOptions = resolvePiPromptOptions(command, workflowRest, values.prompt, workflowCommandNames);
+	const promptGiven = Boolean(promptOptions.oneShotPrompt || promptOptions.initialPrompt);
 	const currentModelSpec = getCurrentModelSpec(feynmanSettingsPath);
 	if (await shouldRunInteractiveSetup(
 		explicitModelSpec,
@@ -816,16 +814,22 @@ async function runMain(input: { here: string; appRoot: string; feynmanVersion: s
 			sessionDir,
 			appRoot,
 			defaultThinkingLevel,
+			modelOnly: true,
 		});
 		if (!getCurrentModelSpec(feynmanSettingsPath)) {
+			console.error(noModelMessage(promptGiven));
+			process.exitCode = 1;
 			return;
 		}
 		await ensureFeynmanSettings(feynmanSettingsPath, bundledSettingsPath, appRoot, defaultThinkingLevel, feynmanAuthPath);
 	}
+	if (!explicitModelSpec && mode !== "rpc" && !(process.stdin.isTTY && process.stdout.isTTY)
+		&& (await getAuthenticatedModelRecords(feynmanAuthPath)).length === 0) {
+		console.error(noModelMessage(promptGiven));
+		process.exitCode = 1;
+		return;
+	}
 
-	const workflowCommandNames = new Set(readPromptSpecs(appRoot).filter((s) => s.topLevelCli).map((s) => s.name));
-	const workflowRest = appendWorkflowFlagPositionals(command, rest, values);
-	const promptOptions = resolvePiPromptOptions(command, workflowRest, values.prompt, workflowCommandNames);
 	// Pi's own session flags pass through; Feynman continues the latest
 	// session only when none of them is given.
 	const piArgs = [
