@@ -12,6 +12,7 @@ import { setupPreviewDependencies } from "./preview.js";
 import { printInfo, printSection, printSuccess } from "../ui/terminal.js";
 import {
 	isInteractiveTerminal,
+	noModelMessage,
 	promptConfirm,
 	promptIntro,
 	promptMultiSelect,
@@ -27,6 +28,9 @@ type SetupOptions = {
 	sessionDir: string;
 	appRoot: string;
 	defaultThinkingLevel?: ThinkingLevel;
+	// The automatic first launch asks only for a model; packages, alphaXiv and
+	// preview stay in `feynman setup`.
+	modelOnly?: boolean;
 };
 
 function printNonInteractiveSetupGuidance(): void {
@@ -77,7 +81,7 @@ async function maybeLoginAlpha(): Promise<void> {
 		return;
 	}
 
-	const shouldLogin = await promptConfirm("Connect alphaXiv now?", true);
+	const shouldLogin = await promptConfirm("Connect alphaXiv now?", false);
 	if (!shouldLogin) {
 		printInfo("Skipping alphaXiv login for now.");
 		return;
@@ -120,9 +124,11 @@ export async function runSetup(options: SetupOptions): Promise<void> {
 	try {
 		await promptIntro("Feynman setup");
 		await runModelSetup(options.settingsPath, options.authPath);
-		await maybeInstallOptionalPackages(options);
-		await maybeLoginAlpha();
-		await maybeInstallPreviewDependencies();
+		if (!options.modelOnly) {
+			await maybeInstallOptionalPackages(options);
+			await maybeLoginAlpha();
+			await maybeInstallPreviewDependencies();
+		}
 
 		await ensureFeynmanSettings(
 			options.settingsPath,
@@ -149,7 +155,11 @@ export async function runSetup(options: SetupOptions): Promise<void> {
 		await promptOutro("Feynman is ready");
 	} catch (error) {
 		if (error instanceof SetupCancelledError) {
-			printInfo("Setup cancelled.");
+			// The first launch reports the missing model itself.
+			if (!options.modelOnly) {
+				printInfo("Setup cancelled.");
+				if (!getCurrentModelSpec(options.settingsPath)) printInfo(noModelMessage());
+			}
 			return;
 		}
 

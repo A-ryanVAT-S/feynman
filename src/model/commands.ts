@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 import { promisify } from "node:util";
 
 import { readJson } from "../pi/settings.js";
-import { promptChoice, promptSecret, promptSelect, promptText, validateApiKeyInput, type PromptSelectOption } from "../setup/prompts.js";
+import { promptChoice, promptSecret, promptSelect, promptText, SetupCancelledError, validateApiKeyInput, type PromptSelectOption } from "../setup/prompts.js";
 import { openUrl } from "../system/open-url.js";
 import { printInfo, printSection, printSuccess, printWarning } from "../ui/terminal.js";
 import {
@@ -1071,21 +1071,18 @@ export async function runModelSetup(settingsPath: string, authPath: string): Pro
 			"Cancel",
 		];
 		const selection = await promptChoice("Choose how to configure model access:", choices, 0);
-		if (selection === 0) {
-			const loggedIn = await loginModelProvider(authPath, undefined, settingsPath);
-			if (!loggedIn) {
-				status = await collectModelStatus(settingsPath, authPath);
-				continue;
-			}
-		} else if (selection === 1) {
-			const configured = await configureApiKeyProvider(authPath);
-			if (!configured) {
-				status = await collectModelStatus(settingsPath, authPath);
-				continue;
-			}
-		} else {
-			printInfo("Setup cancelled.");
-			return;
+		if (selection === 2) throw new SetupCancelledError();
+		// Esc inside a provider list goes back to this menu instead of ending setup.
+		const done = await (selection === 0
+			? loginModelProvider(authPath, undefined, settingsPath)
+			: configureApiKeyProvider(authPath)
+		).catch((error: unknown) => {
+			if (error instanceof SetupCancelledError) return false;
+			throw error;
+		});
+		if (!done) {
+			status = await collectModelStatus(settingsPath, authPath);
+			continue;
 		}
 		status = await collectModelStatus(settingsPath, authPath);
 		if (status.availableModels.length === 0) {

@@ -5,7 +5,9 @@ section: Getting Started
 order: 3
 ---
 
-`feynman setup` connects a model provider, offers optional packages, signs you in to alphaXiv, and offers to install pandoc for preview. It runs automatically when you launch `feynman` interactively without a usable default model, and you can rerun it at any time.
+`feynman setup` connects a model provider, offers optional packages, signs you in to alphaXiv, and offers to install pandoc for preview. You can rerun it at any time.
+
+When you launch `feynman` without a usable model, it asks only for the model. If you set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` first, it skips the question and opens the chat. If you cancel, Feynman exits and prints how to add a model; nothing you typed is sent.
 
 ```bash
 feynman setup
