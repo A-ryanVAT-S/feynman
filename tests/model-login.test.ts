@@ -18,3 +18,10 @@ test("a rejected sign-in for another provider names that provider; other errors 
 	const other = new Error("Login cancelled");
 	assert.equal(describeOAuthLoginFailure("openai", other), other);
 });
+
+test("a sign-in whose browser callback carried no code says how to retry", () => {
+	const error = describeOAuthLoginFailure("openai", new Error("Missing authorization code")) as Error;
+	assert.match(error.message, /Missing authorization code/);
+	assert.match(error.message, /private window/);
+	assert.match(error.message, /feynman model login openai-codex/);
+});

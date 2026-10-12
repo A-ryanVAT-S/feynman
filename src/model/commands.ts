@@ -873,11 +873,12 @@ export function getOrCreateDeviceId(authPath: string): string {
 	return deviceId;
 }
 
-// A provider answers invalid_grant when it rejects the authorization code,
-// usually because a stale session in the browser interfered with the sign-in.
-// Signing out there (or using a private window) and retrying fixes it.
+// A provider answers invalid_grant when it rejects the authorization code, and
+// the browser comes back with no code when the sign-in was denied or lost a
+// redirect; a stale browser session usually causes both. Signing out there (or
+// using a private window) and retrying fixes it.
 export function describeOAuthLoginFailure(providerId: string, error: unknown): unknown {
-	if (!(error instanceof Error) || !error.message.includes("invalid_grant")) return error;
+	if (!(error instanceof Error) || !/invalid_grant|Missing authorization code/.test(error.message)) return error;
 	const alternative = providerId === "openai" ? " Or sign in with `feynman model login openai-codex` instead." : "";
 	return new Error(
 		`${error.message}\nThe sign-in was rejected, usually because of a stale browser session. Sign out of the provider's site in your browser, or use a private window, then run \`feynman model login ${providerId}\` again.${alternative}`,
